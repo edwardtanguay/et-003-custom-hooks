@@ -7,4 +7,18 @@ body {
 	h1 {
 		color: rgb(209, 168, 85);
 	}
+
+	nav {
+		background-color: #222;
+		padding: .5rem;
+		a {
+			color: #aaa;
+			text-decoration: none;
+			margin-right: 1rem;
+		}
+
+		a.active {
+			color: rgb(211, 211, 110);
+		}
+	}
 }
