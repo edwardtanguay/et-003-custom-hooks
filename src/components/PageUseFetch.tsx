@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { FaSpinner } from 'react-icons/fa';
+import { useFetch } from '../hooks/useFetch';
 
 const ordersUrl =
 	'https://raw.githubusercontent.com/graphql-compose/graphql-compose-examples/master/examples/northwind/data/json/orders.json';
@@ -8,41 +7,53 @@ const productsUrl =
 	'https://raw.githubusercontent.com/graphql-compose/graphql-compose-examples/master/examples/northwind/data/json/products.json';
 
 export const PageUseFetch = () => {
-	const [orders, setOrders] = useState([]);
-	const [products, setProducts] = useState([]);
-
-	useEffect(() => {
-		setTimeout(() => {
-			(async () => {
-				setOrders((await axios.get(ordersUrl)).data);
-			})();
-		}, Math.floor(Math.random() * 3000));
-	}, []);
-
-	useEffect(() => {
-		setTimeout(() => {
-			(async () => {
-				setProducts((await axios.get(productsUrl)).data);
-			})();
-		}, Math.floor(Math.random() * 3000));
-	}, []);
+	const {
+		items: orders,
+		totalItems: totalOrders,
+		isLoading: ordersLoading,
+	} = useFetch(ordersUrl);
+	const {
+		items: products,
+		totalItems: totalProducts,
+		isLoading: productsLoading,
+	} = useFetch(productsUrl);
 
 	return (
 		<div className="pageUseFetch">
 			<p>The useFetch page.</p>
 			<hr />
-			{orders.length > 0 ? (
-				<p>There are {orders.length} orders.</p>
-			) : (
-				<p className="loading">
-					<FaSpinner className="spinner" /> Loading orders...
-				</p>
-			)}
-			{products.length > 0 ? (
-				<p>There are {products.length} products.</p>
+			{!productsLoading ? (
+				<>
+					<p>There are {totalProducts} products.</p>
+					{products.map((product: any, i) => {
+						return (
+							<span key={product.productID}>
+								{product.productID}
+								{i !== totalProducts - 1 && <>,</>}{' '}
+							</span>
+						);
+					})}
+				</>
 			) : (
 				<p className="loading">
 					<FaSpinner className="spinner" /> Loading products...
+				</p>
+			)}
+			{!ordersLoading ? (
+				<>
+					<p>There are {totalOrders} orders.</p>
+					{orders.map((order: any, i) => {
+						return (
+							<span key={order.orderID}>
+								{order.orderID}
+								{i !== totalOrders - 1 && <>,</>}{' '}
+							</span>
+						);
+					})}
+				</>
+			) : (
+				<p className="loading">
+					<FaSpinner className="spinner" /> Loading orders...
 				</p>
 			)}
 		</div>
