@@ -1,3 +1,5 @@
+$loadingColor : rgb(196, 144, 101);
+
 body {
 	background-color: #333;
 	color: #ccc;
@@ -11,6 +13,7 @@ body {
 	nav {
 		background-color: #222;
 		padding: .5rem;
+
 		a {
 			color: #aaa;
 			text-decoration: none;
@@ -22,7 +25,31 @@ body {
 		}
 	}
 
-	button {
-		margin-right: .5rem;
+	.pageUseToggle {
+		button {
+			margin-right: .5rem;
+		}
+	}
+
+	.pageUseFetch {
+
+		p.loading {
+			font-size: 1rem;
+			color: $loadingColor;
+
+			.spinner {
+				animation: spin infinite 2s linear;
+			}
+
+			@keyframes spin {
+				from {
+					transform: rotate(0deg);
+				}
+
+				to {
+					transform: rotate(360deg);
+				}
+			}
+		}
 	}
 }
